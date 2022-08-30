@@ -1,8 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 
 export default function GitHub(props) {
   return (
-    <svg width={1024} height={1024} fill="none" viewBox="0 0 1024 1024" {...props}>
+    <svg
+      width={1024}
+      height={1024}
+      fill="none"
+      viewBox="0 0 1024 1024"
+      {...props}
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
