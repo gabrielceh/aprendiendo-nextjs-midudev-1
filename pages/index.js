@@ -1,37 +1,30 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
+import { useEffect } from 'react';
 
 import { colors } from 'styles/theme';
 
 import AppLayout from 'components/AppLayout';
-import Avatar from 'components/Avatar';
 import Button from 'components/Button';
 import GitHub from 'components/Icons/GitHub';
-
-import { authStateChanged, loginGitHub } from 'myFirebase/client';
 import Logo from 'components/Icons/Logo';
 
+import { loginGitHub } from 'myFirebase/client';
+import useUser, { USER_STATES } from 'hooks/useUser';
+
 export default function Home() {
-  const [user, setUser] = useState(null);
+  const user = useUser();
+  const router = useRouter();
 
   useEffect(() => {
-    const initialUser = () => authStateChanged(setUser);
-
-    initialUser();
-  }, []);
+    user && router.replace('/home');
+  }, [user]);
 
   const handleLogin = async () => {
-    try {
-      const { avatar, username, email, url } = await loginGitHub();
-      setUser({
-        avatar,
-        username,
-        email,
-        url,
-      });
-    } catch (err) {
+    loginGitHub().catch((err) => {
       console.log(err);
-    }
+    });
   };
 
   return (
@@ -55,7 +48,7 @@ export default function Home() {
             <h1>Devter</h1>
             <h2>Talk about development with dvelopers 👨‍💻👩‍💻</h2>
             <div>
-              {user === null && (
+              {user === USER_STATES.NOT_LOGGED && (
                 <Button onClick={handleLogin}>
                   <GitHub
                     fill={'#fff'}
@@ -65,16 +58,11 @@ export default function Home() {
                   Login with GitHub
                 </Button>
               )}
-              {user && user.avatar && (
-                <>
-                  <div>
-                    <Avatar
-                      src={user.avatar}
-                      alt={`${user.username} avatar`}
-                      text={user.username}
-                    />
-                  </div>
-                </>
+              {user === USER_STATES.NOT_KNOW && (
+                <img
+                  src="/spinner.gif"
+                  alt="spinner"
+                />
               )}
             </div>
           </section>
