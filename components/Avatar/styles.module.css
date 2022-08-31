@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  background-color: #0099ff;
+  border-radius: 9999px;
+  height: 49px;
+  width: 49px;
+}
+
+.avatar + strong {
+  margin-left: 8px;
+}

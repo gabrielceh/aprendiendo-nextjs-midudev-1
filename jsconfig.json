@@ -1,0 +1,6 @@
+// Esto es para hacer imports absolutos
+{
+  "compilerOptions": {
+    "baseUrl": "."
+  }
+}

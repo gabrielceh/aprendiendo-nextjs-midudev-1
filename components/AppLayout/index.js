@@ -1,4 +1,4 @@
-import styles, { globalStyles } from "./styles";
+import styles, { globalStyles } from './styles';
 
 export default function AppLayout({ children }) {
   return (
@@ -9,7 +9,10 @@ export default function AppLayout({ children }) {
 
       <style jsx>{styles}</style>
 
-      <style jsx global>
+      <style
+        jsx
+        global
+      >
         {globalStyles}
       </style>
     </>
