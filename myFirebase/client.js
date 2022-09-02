@@ -1,7 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
-import { addDoc, collection, getDocs, getFirestore, Timestamp } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  Timestamp,
+} from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,6 +30,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 // const analytics = getAnalytics(app);
 
@@ -58,8 +68,7 @@ export const loginGitHub = async () => {
   }
 };
 
-export const addDevit = ({ content, avatar, userId, userName }) => {
-  console.log(avatar);
+export const addDevit = ({ content, avatar, userId, userName, img }) => {
   return addDoc(collection(db, 'devits'), {
     avatar,
     content,
@@ -68,26 +77,32 @@ export const addDevit = ({ content, avatar, userId, userName }) => {
     createdAt: Timestamp.fromDate(new Date()),
     likesCount: 0,
     sharedCount: 0,
+    img,
   });
 };
 
 export const fetchLatestDevits = () => {
-  return getDocs(collection(db, 'devits')).then((snapshot) => {
+  const q = query(collection(db, 'devits'), orderBy('createdAt', 'desc'));
+
+  return getDocs(q).then((snapshot) => {
     return snapshot.docs.map((doc) => {
       const data = doc.data();
       const id = doc.id;
       const { createdAt } = data;
-      const date = createdAt.toDate();
-      // es-419 es español de latinoamerica
-      const intl = new Intl.DateTimeFormat('es-419');
-      const normalizeCreatedAt = intl.format(date);
       return {
         id,
         ...data,
-        createdAt: normalizeCreatedAt,
+        // convertimos la fecha a Date de js con el unary operator(+)
+        createdAt: +createdAt.toDate(),
       };
     });
   });
+};
+
+export const uploadImage = (file) => {
+  const imgRef = ref(storage, `/images/${file.name}`);
+  const task = uploadBytesResumable(imgRef, file);
+  return task;
 };
 
 export { auth, db };
