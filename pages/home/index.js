@@ -6,7 +6,6 @@ import { fetchLatestDevits } from 'myFirebase/client';
 import useUser from 'hooks/useUser';
 import { colors } from 'styles/theme';
 
-import AppLayout from 'components/AppLayout';
 import Create from 'components/Icons/Create';
 import Devit from 'components/Devit';
 import Home from 'components/Icons/Home';
@@ -28,56 +27,56 @@ export default function HomePage() {
       <Head>
         <title>Inicio | Devter</title>
       </Head>
-      <AppLayout>
-        <header>
-          <h2>Inicio</h2>
-        </header>
-        <section>
-          {timeline.length > 0 &&
-            timeline.map(({ id, userId, userName, avatar, content, createdAt, img }) => (
-              <Devit
-                key={id}
-                avatar={avatar}
-                content={content}
-                userName={userName}
-                userId={userId}
-                createdAt={createdAt}
-                img={img}
-              />
-            ))}
-        </section>
-        <nav>
-          <Link href="/home">
-            <a>
-              <Home
-                stroke="#09f"
-                width={32}
-                height={32}
-              />
-            </a>
-          </Link>
 
-          <Link href="/compose/tweet">
-            <a>
-              <Create
-                stroke="#09f"
-                width={32}
-                height={32}
-              />
-            </a>
-          </Link>
+      <header>
+        <h2>Inicio</h2>
+      </header>
+      <section>
+        {timeline.length > 0 &&
+          timeline.map(({ id, userId, userName, avatar, content, createdAt, img }) => (
+            <Devit
+              key={id}
+              avatar={avatar}
+              content={content}
+              userName={userName}
+              userId={userId}
+              createdAt={createdAt}
+              img={img}
+              id={id}
+            />
+          ))}
+      </section>
+      <nav>
+        <Link href="/home">
+          <a>
+            <Home
+              stroke="#09f"
+              width={32}
+              height={32}
+            />
+          </a>
+        </Link>
 
-          <Link href="/compose/tweet">
-            <a>
-              <Search
-                stroke="#09f"
-                width={32}
-                height={32}
-              />
-            </a>
-          </Link>
-        </nav>
-      </AppLayout>
+        <Link href="/compose/tweet">
+          <a>
+            <Create
+              stroke="#09f"
+              width={32}
+              height={32}
+            />
+          </a>
+        </Link>
+
+        <Link href="/compose/tweet">
+          <a>
+            <Search
+              stroke="#09f"
+              width={32}
+              height={32}
+            />
+          </a>
+        </Link>
+      </nav>
 
       <style jsx>{`
         header {
@@ -110,6 +109,7 @@ export default function HomePage() {
           height: 49px;
           position: sticky;
           width: 100%;
+          padding: 0.5rem 0;
         }
         nav a {
           align-items: center;

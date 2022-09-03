@@ -6,7 +6,6 @@ import useUser from 'hooks/useUser';
 import { addDevit, uploadImage } from 'myFirebase/client';
 import { getDownloadURL } from 'firebase/storage';
 
-import AppLayout from 'components/AppLayout';
 import Button from 'components/Button';
 import Avatar from 'components/Avatar';
 
@@ -112,45 +111,44 @@ export default function ComposeTweet() {
       <Head>
         <title>Crear devit | Devter</title>
       </Head>
-      <AppLayout>
-        <section className="form-container">
-          {user && (
-            <section className="avatar-container">
-              <Avatar src={user.avatar} />
+
+      <section className="form-container">
+        {user && (
+          <section className="avatar-container">
+            <Avatar src={user.avatar} />
+          </section>
+        )}
+        <form onSubmit={handleSubmit}>
+          <textarea
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            placeholder="¿Qué está pasando?"
+            value={message}
+            onChange={handleChange}
+          ></textarea>
+          {progress && (
+            <progress
+              value={progress}
+              max="100"
+            >
+              Subiendo...
+            </progress>
+          )}
+          {imgURL && (
+            <section className="remove-img">
+              <button onClick={() => setImgURL(null)}>x</button>
+              <img
+                src={imgURL}
+                alt={imgURL}
+              />
             </section>
           )}
-          <form onSubmit={handleSubmit}>
-            <textarea
-              onDragEnter={handleDragEnter}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              placeholder="¿Qué está pasando?"
-              value={message}
-              onChange={handleChange}
-            ></textarea>
-            {progress && (
-              <progress
-                value={progress}
-                max="100"
-              >
-                Subiendo...
-              </progress>
-            )}
-            {imgURL && (
-              <section className="remove-img">
-                <button onClick={() => setImgURL(null)}>x</button>
-                <img
-                  src={imgURL}
-                  alt={imgURL}
-                />
-              </section>
-            )}
-            <div>
-              <Button disabled={isButtonDisable}>Devitear</Button>
-            </div>
-          </form>
-        </section>
-      </AppLayout>
+          <div>
+            <Button disabled={isButtonDisable}>Devitear</Button>
+          </div>
+        </form>
+      </section>
 
       <style jsx>{`
         .form-container {

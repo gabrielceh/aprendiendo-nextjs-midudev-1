@@ -10,7 +10,7 @@ const DATE_UNITS = [
 
 // hayamos la diferencia entre la fecha actual y la que queremos evaluar
 const getDateDiffs = (timestamp) => {
-  console.log('getDateDiff');
+  // console.log('getDateDiff');
   const now = Date.now();
   const elapse = (timestamp - now) / 1000;
 
@@ -44,7 +44,7 @@ export default function useTimeAgo(timestamp) {
   }, [timestamp]);
 
   const rtf = new Intl.RelativeTimeFormat('es', {
-    style: 'short',
+    style: 'long',
   });
   const { value, unit } = timeago;
   return rtf.format(value, unit);
